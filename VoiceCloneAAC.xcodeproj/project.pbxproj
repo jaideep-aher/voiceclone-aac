@@ -1,0 +1,535 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF0001 /* VoiceCloneAACApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0001 /* VoiceCloneAACApp.swift */; };
+		BF0002 /* RootFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0002 /* RootFlowView.swift */; };
+		BF0003 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0003 /* User.swift */; };
+		BF0004 /* Phrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0004 /* Phrase.swift */; };
+		BF0005 /* VoiceClone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0005 /* VoiceClone.swift */; };
+		BF0006 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0006 /* APIService.swift */; };
+		BF0007 /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0007 /* AudioService.swift */; };
+		BF0008 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0008 /* PersistenceController.swift */; };
+		BF0008A /* AudioCacheStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0008A /* AudioCacheStore.swift */; };
+		BF0008B /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0008B /* NetworkMonitor.swift */; };
+		BF0008C /* PreCacheCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0008C /* PreCacheCoordinator.swift */; };
+		BF0008D /* CoreDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0008D /* CoreDataModels.swift */; };
+		BF0008E /* TextHashing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0008E /* TextHashing.swift */; };
+		BF0008F /* VoiceCloneCache.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = FR0008F /* VoiceCloneCache.xcdatamodeld */; };
+		BF0009 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0009 /* AuthViewModel.swift */; };
+		BF0010 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0010 /* HomeViewModel.swift */; };
+		BF0011 /* VoiceSetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0011 /* VoiceSetupViewModel.swift */; };
+		BF0012 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0012 /* WelcomeView.swift */; };
+		BF0013 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0013 /* SignUpView.swift */; };
+		BF0014 /* VoiceSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0014 /* VoiceSetupView.swift */; };
+		BF0015 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0015 /* HomeView.swift */; };
+		BF0016 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0016 /* TextInputView.swift */; };
+		BF0017 /* QuickPhrasesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0017 /* QuickPhrasesView.swift */; };
+		BF0018 /* RecentPhrasesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0018 /* RecentPhrasesView.swift */; };
+		BF0019 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0019 /* SettingsView.swift */; };
+		BF0020 /* SpeakButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0020 /* SpeakButton.swift */; };
+		BF0021 /* PhraseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0021 /* PhraseCard.swift */; };
+		BF0022 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0022 /* WaveformView.swift */; };
+		BF0023 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0023 /* KeychainHelper.swift */; };
+		BF0024 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0024 /* Constants.swift */; };
+		BF0025 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR0025 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FR0001 /* VoiceCloneAACApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCloneAACApp.swift; sourceTree = "<group>"; };
+		FR0002 /* RootFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootFlowView.swift; sourceTree = "<group>"; };
+		FR0003 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		FR0004 /* Phrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phrase.swift; sourceTree = "<group>"; };
+		FR0005 /* VoiceClone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceClone.swift; sourceTree = "<group>"; };
+		FR0006 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		FR0007 /* AudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioService.swift; sourceTree = "<group>"; };
+		FR0008 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		FR0008A /* AudioCacheStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCacheStore.swift; sourceTree = "<group>"; };
+		FR0008B /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		FR0008C /* PreCacheCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreCacheCoordinator.swift; sourceTree = "<group>"; };
+		FR0008D /* CoreDataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModels.swift; sourceTree = "<group>"; };
+		FR0008E /* TextHashing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHashing.swift; sourceTree = "<group>"; };
+		FR0008F /* VoiceCloneCache.xcdatamodeld */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodeld; path = VoiceCloneCache.xcdatamodeld; sourceTree = "<group>"; };
+		FR0009 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		FR0010 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		FR0011 /* VoiceSetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSetupViewModel.swift; sourceTree = "<group>"; };
+		FR0012 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		FR0013 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		FR0014 /* VoiceSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSetupView.swift; sourceTree = "<group>"; };
+		FR0015 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		FR0016 /* TextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
+		FR0017 /* QuickPhrasesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPhrasesView.swift; sourceTree = "<group>"; };
+		FR0018 /* RecentPhrasesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentPhrasesView.swift; sourceTree = "<group>"; };
+		FR0019 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		FR0020 /* SpeakButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakButton.swift; sourceTree = "<group>"; };
+		FR0021 /* PhraseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhraseCard.swift; sourceTree = "<group>"; };
+		FR0022 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
+		FR0023 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		FR0024 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		FR0025 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FR0026 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FR0027 /* VoiceCloneAAC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VoiceCloneAAC.entitlements; sourceTree = "<group>"; };
+		FR9999 /* VoiceCloneAAC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceCloneAAC.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FW0001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		G00001 = {
+			isa = PBXGroup;
+			children = (
+				G00002 /* VoiceCloneAAC */,
+				G00099 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		G00002 /* VoiceCloneAAC */ = {
+			isa = PBXGroup;
+			children = (
+				FR0026 /* Info.plist */,
+				FR0027 /* VoiceCloneAAC.entitlements */,
+				FR0025 /* Assets.xcassets */,
+				G00003 /* App */,
+				G00004 /* Models */,
+				G00005 /* Services */,
+				G00006 /* ViewModels */,
+				G00007 /* Views */,
+				G00008 /* Utilities */,
+			);
+			path = VoiceCloneAAC;
+			sourceTree = "<group>";
+		};
+		G00003 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				FR0001 /* VoiceCloneAACApp.swift */,
+				FR0002 /* RootFlowView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		G00004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FR0008F /* VoiceCloneCache.xcdatamodeld */,
+				FR0008D /* CoreDataModels.swift */,
+				FR0003 /* User.swift */,
+				FR0004 /* Phrase.swift */,
+				FR0005 /* VoiceClone.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		G00005 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				FR0006 /* APIService.swift */,
+				FR0007 /* AudioService.swift */,
+				FR0008 /* PersistenceController.swift */,
+				FR0008A /* AudioCacheStore.swift */,
+				FR0008B /* NetworkMonitor.swift */,
+				FR0008C /* PreCacheCoordinator.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		G00006 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				FR0009 /* AuthViewModel.swift */,
+				FR0010 /* HomeViewModel.swift */,
+				FR0011 /* VoiceSetupViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		G00007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				G00010 /* Onboarding */,
+				G00011 /* Home */,
+				G00012 /* Settings */,
+				G00013 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		G00008 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				FR0023 /* KeychainHelper.swift */,
+				FR0024 /* Constants.swift */,
+				FR0008E /* TextHashing.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		G00010 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				FR0012 /* WelcomeView.swift */,
+				FR0013 /* SignUpView.swift */,
+				FR0014 /* VoiceSetupView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		G00011 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				FR0015 /* HomeView.swift */,
+				FR0016 /* TextInputView.swift */,
+				FR0017 /* QuickPhrasesView.swift */,
+				FR0018 /* RecentPhrasesView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		G00012 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				FR0019 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		G00013 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				FR0020 /* SpeakButton.swift */,
+				FR0021 /* PhraseCard.swift */,
+				FR0022 /* WaveformView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		G00099 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FR9999 /* VoiceCloneAAC.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		NT0001 /* VoiceCloneAAC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCL0003 /* Build configuration list for PBXNativeTarget "VoiceCloneAAC" */;
+			buildPhases = (
+				SRC0001 /* Sources */,
+				FW0001 /* Frameworks */,
+				RES0001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VoiceCloneAAC;
+			productName = VoiceCloneAAC;
+			productReference = FR9999 /* VoiceCloneAAC.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		PJ0001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					NT0001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = BCL0001 /* Build configuration list for PBXProject "VoiceCloneAAC" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = G00001;
+			productRefGroup = G00099 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				NT0001 /* VoiceCloneAAC */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		RES0001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF0025 /* Assets.xcassets in Resources */,
+				BF0008F /* VoiceCloneCache.xcdatamodeld in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		SRC0001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF0001 /* VoiceCloneAACApp.swift in Sources */,
+				BF0002 /* RootFlowView.swift in Sources */,
+				BF0003 /* User.swift in Sources */,
+				BF0004 /* Phrase.swift in Sources */,
+				BF0005 /* VoiceClone.swift in Sources */,
+				BF0006 /* APIService.swift in Sources */,
+				BF0007 /* AudioService.swift in Sources */,
+				BF0008 /* PersistenceController.swift in Sources */,
+				BF0008A /* AudioCacheStore.swift in Sources */,
+				BF0008B /* NetworkMonitor.swift in Sources */,
+				BF0008C /* PreCacheCoordinator.swift in Sources */,
+				BF0008D /* CoreDataModels.swift in Sources */,
+				BF0008E /* TextHashing.swift in Sources */,
+				BF0009 /* AuthViewModel.swift in Sources */,
+				BF0010 /* HomeViewModel.swift in Sources */,
+				BF0011 /* VoiceSetupViewModel.swift in Sources */,
+				BF0012 /* WelcomeView.swift in Sources */,
+				BF0013 /* SignUpView.swift in Sources */,
+				BF0014 /* VoiceSetupView.swift in Sources */,
+				BF0015 /* HomeView.swift in Sources */,
+				BF0016 /* TextInputView.swift in Sources */,
+				BF0017 /* QuickPhrasesView.swift in Sources */,
+				BF0018 /* RecentPhrasesView.swift in Sources */,
+				BF0019 /* SettingsView.swift in Sources */,
+				BF0020 /* SpeakButton.swift in Sources */,
+				BF0021 /* PhraseCard.swift in Sources */,
+				BF0022 /* WaveformView.swift in Sources */,
+				BF0023 /* KeychainHelper.swift in Sources */,
+				BF0024 /* Constants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BC0001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BC0002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BC0003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VoiceCloneAAC/VoiceCloneAAC.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = VoiceCloneAAC/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.voiceclone.aac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BC0004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VoiceCloneAAC/VoiceCloneAAC.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = VoiceCloneAAC/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.voiceclone.aac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BCL0001 /* Build configuration list for PBXProject "VoiceCloneAAC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC0001 /* Debug */,
+				BC0002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BCL0003 /* Build configuration list for PBXNativeTarget "VoiceCloneAAC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC0003 /* Debug */,
+				BC0004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = PJ0001 /* Project object */;
+}
