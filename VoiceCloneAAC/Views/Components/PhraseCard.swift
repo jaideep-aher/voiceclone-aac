@@ -7,10 +7,17 @@ struct PhraseCard: View {
     var action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        let bubbleTint: Color = highContrast ? .primary : .vcPrimary
+        let captionTint: Color = cacheCaption.contains("Cached") ? .green : .secondary
+        let cardFill: Color = highContrast ? Color.black.opacity(0.08) : .white
+        let strokeColor: Color = highContrast ? .primary : .clear
+        let strokeWidth: CGFloat = highContrast ? 2 : 0
+        let shadowColor: Color = highContrast ? .clear : .vcCardShadow
+
+        return Button(action: action) {
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: "bubble.left.and.bubble.right.fill")
-                    .foregroundStyle(highContrast ? .primary : .vcPrimary)
+                    .foregroundStyle(bubbleTint)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 6) {
                     Text(phrase.text)
@@ -20,22 +27,22 @@ struct PhraseCard: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text(cacheCaption)
                         .font(.caption2)
-                        .foregroundStyle(cacheCaption.contains("Cached") ? .green : .secondary)
+                        .foregroundStyle(captionTint)
                 }
                 Image(systemName: "speaker.wave.2.fill")
-                    .foregroundStyle(.vcAccentTeal)
+                    .foregroundStyle(Color.vcAccentTeal)
                     .accessibilityHidden(true)
             }
             .padding(14)
             .background(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(highContrast ? Color.black.opacity(0.08) : Color.white)
+                    .fill(cardFill)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .stroke(highContrast ? Color.primary : Color.clear, lineWidth: highContrast ? 2 : 0)
+                    .stroke(strokeColor, lineWidth: strokeWidth)
             )
-            .shadow(color: highContrast ? .clear : .vcCardShadow, radius: 2, x: 0, y: 1)
+            .shadow(color: shadowColor, radius: 2, x: 0, y: 1)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Speak phrase: \(phrase.text). \(cacheCaption)")

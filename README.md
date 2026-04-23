@@ -33,6 +33,7 @@ This repository contains:
 |----------|----------|
 | **[docs/SETUP_ENV_AND_STATUS.md](docs/SETUP_ENV_AND_STATUS.md)** | Environment variables, where each secret comes from, HTTP API reference, **known gaps / next steps** |
 | **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** | System design, component map, **Mermaid flowcharts** (auth, clone, speak, offline) |
+| **[docs/INSTALL_ON_IPHONE.md](docs/INSTALL_ON_IPHONE.md)** | Short steps to install on a **physical iPhone** from Xcode |
 | **[docs/VoiceClone-AAC-Architecture-Plan.md](docs/VoiceClone-AAC-Architecture-Plan.md)** | Original product/architecture planning notes (landscape, pricing notes) |
 
 ---

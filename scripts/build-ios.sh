@@ -10,7 +10,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
 cd "$ROOT"
-DEST="${1:-platform=iOS Simulator,name=iPhone 16}"
+DEST="${1:-platform=iOS Simulator,name=iPhone 17}"
 xcodebuild \
   -project VoiceCloneAAC.xcodeproj \
   -scheme VoiceCloneAAC \
