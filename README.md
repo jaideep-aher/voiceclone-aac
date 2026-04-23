@@ -76,6 +76,25 @@ Create a **Storage** bucket matching `SUPABASE_VOICE_BUCKET` (default `voiceclon
 4. For **Sign in with Apple**, enable the capability in Xcode and configure the **Apple** provider + redirect URLs in the Supabase dashboard (see setup doc).
 5. Build and run (simulator or device).
 
+### Command-line build (Simulator)
+
+First-time on a Mac you may need:
+
+```bash
+sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+sudo xcodebuild -license accept
+```
+
+Then from the repo root:
+
+```bash
+chmod +x scripts/build-ios.sh
+./scripts/build-ios.sh
+```
+
+Optional: pass a custom simulator destination, e.g.  
+`./scripts/build-ios.sh 'platform=iOS Simulator,name=iPhone 15'`
+
 ---
 
 ## Repository layout
@@ -88,6 +107,8 @@ voiceclone-aac/
 │   ├── src/                 # Express routes, ElevenLabs + Supabase integration
 │   ├── scripts/             # curl / test helpers
 │   └── .env.example
+├── scripts/
+│   └── build-ios.sh         # xcodebuild wrapper for Simulator
 ├── supabase/migrations/
 ├── docs/
 │   ├── SETUP_ENV_AND_STATUS.md
