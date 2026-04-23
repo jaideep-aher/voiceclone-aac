@@ -95,6 +95,8 @@ chmod +x scripts/build-ios.sh
 Optional: pass a custom simulator destination, e.g.  
 `./scripts/build-ios.sh 'platform=iOS Simulator,name=iPhone 15'`
 
+**If the build says no destination / no simulator:** install an iOS Simulator runtime in **Xcode → Settings → Platforms** (or **Components** on older Xcode). The download is large (often **8GB+**); you need enough free disk space. Alternatively connect a physical iPhone, select it as the run destination in Xcode, and ensure the **iOS 26.x** device support/platform is installed if Xcode prompts you.
+
 ---
 
 ## Repository layout
