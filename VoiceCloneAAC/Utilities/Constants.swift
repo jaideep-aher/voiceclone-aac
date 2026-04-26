@@ -2,12 +2,36 @@ import Foundation
 import SwiftUI
 
 enum Constants {
-    /// Replace with your Railway URL (no trailing slash), e.g. `https://voiceclone-api.up.railway.app`
-    static let apiBaseURLString = "https://YOUR_RAILWAY_URL"
+    /// API base URL — resolved in priority order:
+    ///   1. VC_API_URL environment variable on the scheme (useful for CI / switching staging vs prod)
+    ///   2. VC_API_URL key in the app's Info.plist (set via a .xcconfig file for each build config)
+    ///   3. Hardcoded fallback below — update this when you have your Railway URL
+    static let apiBaseURLString: String = {
+        // 1. Scheme env var (Xcode: Product → Scheme → Edit Scheme → Run → Arguments → Environment Variables)
+        if let env = ProcessInfo.processInfo.environment["VC_API_URL"], !env.isEmpty {
+            return env
+        }
+        // 2. Info.plist (add VC_API_URL key pointing to $(VC_API_URL) from .xcconfig)
+        if let plist = Bundle.main.object(forInfoDictionaryKey: "VC_API_URL") as? String,
+           !plist.isEmpty, !plist.hasPrefix("$(") {
+            return plist
+        }
+        // 3. Hardcoded fallback — replace with your Railway URL after `railway up`
+        return "https://YOUR_RAILWAY_URL"
+    }()
 
     static var apiBaseURL: URL {
-        guard let url = URL(string: apiBaseURLString) else {
-            fatalError("Invalid Constants.apiBaseURLString — set your Railway URL in Constants.swift")
+        guard let url = URL(string: apiBaseURLString),
+              !apiBaseURLString.contains("YOUR_RAILWAY_URL") else {
+            fatalError(
+                """
+                ⛔ VoiceClone AAC: API URL not configured.
+                Set VC_API_URL in:
+                  • Xcode scheme env vars (for development), OR
+                  • Info.plist via .xcconfig (for CI/TestFlight), OR
+                  • Constants.swift fallback (simplest option)
+                """
+            )
         }
         return url
     }

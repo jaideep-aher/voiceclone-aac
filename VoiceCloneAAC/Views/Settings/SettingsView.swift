@@ -89,10 +89,10 @@ struct SettingsView: View {
                     LabeledContent("Version") {
                         Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
                     }
-                    Link("Privacy policy", destination: URL(string: "https://example.com/privacy")!)
+                    Link("Privacy policy", destination: URL(string: "https://jaideep-aher.github.io/voiceclone-aac/privacy-policy")!)
                         .accessibilityLabel("Open privacy policy")
                     LabeledContent("Support") {
-                        Link("support@voiceclone.app", destination: URL(string: "mailto:support@voiceclone.app")!)
+                        Link("privacy@voicecloneaac.app", destination: URL(string: "mailto:privacy@voicecloneaac.app")!)
                     }
                 }
 
