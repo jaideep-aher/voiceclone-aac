@@ -18,7 +18,9 @@ function clientKey(req: Request): string {
 export const apiRateLimiter = rateLimit({
   windowMs: 60_000,
   limit: 60,
-  standardHeaders: true,
+  statusCode: 429,          // standard rate-limit status (was defaulting to 429, now explicit)
+  standardHeaders: 'draft-7',
   legacyHeaders: false,
   keyGenerator: (req) => clientKey(req as Request),
+  message: { error: 'Too many requests, please slow down.' },
 });

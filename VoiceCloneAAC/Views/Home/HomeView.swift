@@ -26,9 +26,9 @@ struct HomeView: View {
 
     private var speakDisabled: Bool {
         let t = homeVM.draftText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !t.isEmpty else { return false }
+        if t.isEmpty { return true }                          // nothing to speak
         if network.isConnected { return false }
-        return !homeVM.isTextCached(t, voiceId: voiceId)
+        return !homeVM.isTextCached(t, voiceId: voiceId)     // offline + not cached
     }
 
     var body: some View {
@@ -87,20 +87,25 @@ struct HomeView: View {
                                 categoryChips
 
                                 RecentPhrasesView(
-                                    phrases: homeVM.recentPhrases,
+                                    phrases: homeVM.searchQuery.isEmpty ? homeVM.recentPhrases : homeVM.searchResults,
+                                    sectionTitle: homeVM.searchQuery.isEmpty ? "Recent" : "Results",
                                     highContrast: highContrast,
-                                    cacheCaption: { homeVM.cacheStatusLabel(for: $0.text, voiceId: voiceId) }
-                                ) { phrase in
-                                    Task {
-                                        await homeVM.speak(
-                                            phrase.text,
-                                            phraseId: phrase.id,
-                                            voiceId: voiceId,
-                                            categoryForQueue: "library",
-                                            onUnauthorized: { auth.handleUnauthorized() }
-                                        )
+                                    cacheCaption: { homeVM.cacheStatusLabel(for: $0.text, voiceId: voiceId) },
+                                    onSpeak: { phrase in
+                                        Task {
+                                            await homeVM.speak(
+                                                phrase.text,
+                                                phraseId: phrase.id,
+                                                voiceId: voiceId,
+                                                categoryForQueue: "library",
+                                                onUnauthorized: { auth.handleUnauthorized() }
+                                            )
+                                        }
+                                    },
+                                    onDelete: { phrase in
+                                        Task { await homeVM.deletePhrase(phrase) }
                                     }
-                                }
+                                )
                             }
                             .padding(.horizontal, 20)
                             .padding(.bottom, 100)
@@ -139,15 +144,17 @@ struct HomeView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        showSettings = true
-                    } label: {
-                        Image(systemName: "person.crop.circle.fill")
-                            .font(.title2)
-                            .foregroundStyle(Color.vcPrimary)
-                            .frame(minWidth: 44, minHeight: 44)
+                    if homeVM.isPlayingAudio {
+                        Button {
+                            homeVM.stopSpeaking()
+                        } label: {
+                            Image(systemName: "stop.circle.fill")
+                                .font(.title2)
+                                .foregroundStyle(Color.red)
+                                .frame(minWidth: 44, minHeight: 44)
+                        }
+                        .accessibilityLabel("Stop speaking")
                     }
-                    .accessibilityLabel("Profile and settings")
                 }
                 ToolbarItem(placement: .principal) {
                     Text("VoiceClone")
@@ -207,9 +214,7 @@ struct HomeView: View {
                 }
             }
         }
-        .onChange(of: audioCache.totalCachedBytes) { _, _ in
-            // Re-evaluate cache icons when background pre-cache or playback updates storage.
-        }
+        .searchable(text: $homeVM.searchQuery, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "Search phrases…")
         .dynamicTypeSize(dynamicTypeSize)
         .animation(.easeInOut(duration: 0.2), value: showBackOnlineToast)
         .task {

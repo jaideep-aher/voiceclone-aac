@@ -81,7 +81,7 @@ actor APIService {
                 throw APIError.server(status: -1, message: "Not HTTP")
             }
             if http.statusCode == 401 { throw APIError.unauthorized }
-            if http.statusCode == 503 {
+            if http.statusCode == 429 {
                 let ra = http.value(forHTTPHeaderField: "Retry-After")
                 throw APIError.rateLimited(retryAfter: ra)
             }
@@ -156,6 +156,27 @@ actor APIService {
             throw Self.apiError(data: data, status: http.statusCode)
         }
         return try decoder().decode([Phrase].self, from: data)
+    }
+
+    func deletePhrase(id: UUID) async throws {
+        let req = try authorizedRequest(path: "/api/phrases/\(id.uuidString)", method: "DELETE", body: nil, contentType: nil)
+        let (data, http) = try await perform(req)
+        guard (200 ..< 300).contains(http.statusCode) else {
+            throw Self.apiError(data: data, status: http.statusCode)
+        }
+    }
+
+    func updatePhrase(id: UUID, text: String?, category: String?) async throws -> Phrase {
+        var payload: [String: Any] = [:]
+        if let text { payload["text"] = text }
+        if let category { payload["category"] = category }
+        let body = try JSONSerialization.data(withJSONObject: payload)
+        let req = try authorizedRequest(path: "/api/phrases/\(id.uuidString)", method: "PUT", body: body)
+        let (data, http) = try await perform(req)
+        guard (200 ..< 300).contains(http.statusCode) else {
+            throw Self.apiError(data: data, status: http.statusCode)
+        }
+        return try decoder().decode(Phrase.self, from: data)
     }
 
     func createPhrase(text: String, category: String, isQuickPhrase: Bool) async throws -> Phrase {

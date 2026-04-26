@@ -259,62 +259,32 @@ voiceRouter.post(
 
     const audioBuffer = Buffer.concat(chunks.map((c) => Buffer.from(c)));
 
-    void (async () => {
-      try {
-        const bucket = config.supabaseVoiceBucket;
-        const cachePath = `tts/${userId}/${randomUUID()}.mp3`;
-        const { error: upErr } = await admin.storage
-          .from(bucket)
-          .upload(cachePath, audioBuffer, {
-            contentType: 'audio/mpeg',
-            upsert: false,
-          });
-
-        if (upErr) {
-          console.error('[tts cache]', upErr.message);
-          return;
-        }
-
-        const { data: pub } = admin.storage.from(bucket).getPublicUrl(cachePath);
-        const audioUrl = pub.publicUrl;
-
-        let phraseRow: { id: string; use_count: number | null } | null = null;
-        if (body.phrase_id) {
-          const { data } = await admin
+    // Only update use_count/last_used_at for saved library phrases.
+    // Skipping Supabase Storage upload for ad-hoc text — iOS caches on-device.
+    if (body.phrase_id) {
+      void (async () => {
+        try {
+          const { data: phraseRow } = await admin
             .from('phrases')
             .select('id, use_count')
             .eq('id', body.phrase_id)
             .eq('user_id', userId)
             .maybeSingle();
-          phraseRow = data;
-        } else {
-          const { data } = await admin
+
+          if (!phraseRow) return;
+
+          await admin
             .from('phrases')
-            .select('id, use_count')
-            .eq('user_id', userId)
-            .eq('text', body.text)
-            .order('last_used_at', { ascending: false })
-            .limit(1)
-            .maybeSingle();
-          phraseRow = data;
+            .update({
+              use_count: (phraseRow.use_count ?? 0) + 1,
+              last_used_at: new Date().toISOString(),
+            })
+            .eq('id', phraseRow.id)
+            .eq('user_id', userId);
+        } catch (e) {
+          console.error('[tts post-process]', e);
         }
-
-        if (!phraseRow) {
-          return;
-        }
-
-        await admin
-          .from('phrases')
-          .update({
-            use_count: (phraseRow.use_count ?? 0) + 1,
-            last_used_at: new Date().toISOString(),
-            audio_url: audioUrl,
-          })
-          .eq('id', phraseRow.id)
-          .eq('user_id', userId);
-      } catch (e) {
-        console.error('[tts post-process]', e);
-      }
-    })();
+      })();
+    }
   })
 );

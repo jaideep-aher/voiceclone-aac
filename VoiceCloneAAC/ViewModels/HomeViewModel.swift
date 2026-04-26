@@ -36,19 +36,14 @@ final class HomeViewModel: ObservableObject {
         isLoadingPhrases = true
         defer { isLoadingPhrases = false }
         do {
-            let cat = selectedCategory.map { Constants.apiCategory($0) }
-            phrases = try await api.fetchPhrases(category: cat)
+            // Fetch all phrases; category filtering is done client-side
+            phrases = try await api.fetchPhrases(category: nil)
         } catch {
             if case APIError.unauthorized = error {
                 NotificationCenter.default.post(name: .apiUnauthorized, object: nil)
             }
             lastError = error.localizedDescription
         }
-    }
-
-    func setCategory(_ name: String?) {
-        selectedCategory = name
-        Task { await loadPhrases() }
     }
 
     func speak(
@@ -91,14 +86,31 @@ final class HomeViewModel: ObservableObject {
                 phraseId: phraseId
             )
             try cache.saveAudio(data: data, text: trimmed, voiceId: vid)
+            isPlayingAudio = true
             try audio.play(data: data)
-            await loadPhrases()
+            // Optimistic local update — increment use_count & last_used_at without a network round-trip
+            let now = Date()
+            let matchIndex: Int?
+            if let phraseId {
+                matchIndex = phrases.firstIndex(where: { $0.id == phraseId })
+            } else {
+                matchIndex = phrases.firstIndex(where: { TextHashing.normalize($0.text) == TextHashing.normalize(trimmed) })
+            }
+            if let idx = matchIndex {
+                let p = phrases[idx]
+                phrases[idx] = Phrase(
+                    id: p.id, userId: p.userId, text: p.text, category: p.category,
+                    isQuickPhrase: p.isQuickPhrase, audioUrl: p.audioUrl,
+                    useCount: p.useCount + 1, lastUsedAt: now, createdAt: p.createdAt
+                )
+            }
         } catch {
             if case APIError.unauthorized = error {
                 onUnauthorized()
             }
             lastError = error.localizedDescription
         }
+        isPlayingAudio = false
     }
 
     func processPendingQueue(voiceId: String?) async {
@@ -118,7 +130,6 @@ final class HomeViewModel: ObservableObject {
                 cache.markPendingFailed(p)
             }
         }
-        await loadPhrases()
     }
 
     func addPhrase(text: String, category: String) async throws {
@@ -137,11 +148,59 @@ final class HomeViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Filtered / derived lists
+
+    var filteredPhrases: [Phrase] {
+        guard let cat = selectedCategory else { return phrases }
+        let apiCat = Constants.apiCategory(cat)
+        return phrases.filter { $0.category == apiCat }
+    }
+
     var recentPhrases: [Phrase] {
-        phrases
+        filteredPhrases
             .filter { $0.lastUsedAt != nil }
             .sorted { ($0.lastUsedAt ?? .distantPast) > ($1.lastUsedAt ?? .distantPast) }
             .prefix(12)
             .map { $0 }
+    }
+
+    var searchResults: [Phrase] {
+        let q = searchQuery.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard !q.isEmpty else { return filteredPhrases }
+        return filteredPhrases.filter { $0.text.lowercased().contains(q) }
+    }
+
+    @Published var searchQuery: String = ""
+    @Published var isPlayingAudio = false
+
+    func stopSpeaking() {
+        audio.stopPlayback()
+        isSpeaking = false
+        isPlayingAudio = false
+    }
+
+    func setCategory(_ name: String?) {
+        selectedCategory = name
+        // client-side filter — no network call needed
+    }
+
+    func deletePhrase(_ phrase: Phrase) async {
+        do {
+            try await api.deletePhrase(id: phrase.id)
+            phrases.removeAll { $0.id == phrase.id }
+        } catch {
+            lastError = error.localizedDescription
+        }
+    }
+
+    func updatePhrase(_ phrase: Phrase, newText: String, newCategory: String) async {
+        do {
+            let updated = try await api.updatePhrase(id: phrase.id, text: newText, category: Constants.apiCategory(newCategory))
+            if let idx = phrases.firstIndex(where: { $0.id == phrase.id }) {
+                phrases[idx] = updated
+            }
+        } catch {
+            lastError = error.localizedDescription
+        }
     }
 }
