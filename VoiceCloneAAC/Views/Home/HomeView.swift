@@ -183,12 +183,16 @@ struct HomeView: View {
                     Form {
                         TextField("Phrase", text: $newPhraseText, axis: .vertical)
                             .lineLimit(3 ... 6)
+                            .foregroundStyle(Color.black)
+                            .tint(Color.vcPrimary)
                         Picker("Category", selection: $newPhraseCategory) {
                             ForEach(Constants.phraseCategories, id: \.self) { c in
                                 Text(c).tag(c)
                             }
                         }
                     }
+                    .scrollContentBackground(.hidden)
+                    .background(Color.vcBackground)
                     .navigationTitle("New phrase")
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
