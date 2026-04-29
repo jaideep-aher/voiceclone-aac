@@ -24,7 +24,8 @@ struct RootFlowView: View {
                 case .welcome:
                     WelcomeView(
                         onGetStarted: { auth.beginSignUp() },
-                        onHaveAccount: { auth.beginSignIn() }
+                        onHaveAccount: { auth.beginSignIn() },
+                        onSkip: { auth.skipAuth() }
                     )
                 case .auth(let isSignUp):
                     SignUpView(isSignUp: isSignUp)

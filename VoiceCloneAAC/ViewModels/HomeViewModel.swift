@@ -1,3 +1,4 @@
+import AVFoundation
 import Foundation
 import SwiftUI
 
@@ -14,6 +15,9 @@ final class HomeViewModel: ObservableObject {
     private let api = APIService.shared
     private let cache = AudioCacheStore.shared
     private let audio = AudioService()
+    private let systemSynth = AVSpeechSynthesizer()
+
+    private var isGuestMode: Bool { KeychainHelper.readToken() == nil }
 
     var audioService: AudioService { audio }
 
@@ -32,6 +36,7 @@ final class HomeViewModel: ObservableObject {
     }
 
     func loadPhrases() async {
+        guard !isGuestMode else { return }          // no account → nothing to load
         guard NetworkMonitor.shared.isConnected else { return }
         isLoadingPhrases = true
         defer { isLoadingPhrases = false }
@@ -55,12 +60,26 @@ final class HomeViewModel: ObservableObject {
     ) async {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
-        guard let vid = voiceId else {
-            lastError = "Voice clone not ready yet."
-            return
-        }
 
         offlineInfoMessage = nil
+
+        // ── Guest / no voice clone → system TTS ──────────────────────────────
+        guard let vid = voiceId else {
+            isSpeaking = true
+            isPlayingAudio = true
+            let utterance = AVSpeechUtterance(string: trimmed)
+            utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+            utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+            systemSynth.speak(utterance)
+            // AVSpeechSynthesizer has no simple async completion; approximate duration
+            let approxSeconds = max(1.5, Double(trimmed.count) * 0.06)
+            try? await Task.sleep(nanoseconds: UInt64(approxSeconds * 1_000_000_000))
+            isSpeaking = false
+            isPlayingAudio = false
+            return
+        }
+        // ─────────────────────────────────────────────────────────────────────
+
         isSpeaking = true
         defer { isSpeaking = false }
 
@@ -133,10 +152,20 @@ final class HomeViewModel: ObservableObject {
     }
 
     func addPhrase(text: String, category: String) async throws {
+        let cat = Constants.apiCategory(category)
+        if isGuestMode {
+            // Guest mode: store in-memory only (no backend)
+            let local = Phrase(
+                id: UUID(), userId: UUID(), text: text, category: cat,
+                isQuickPhrase: false, audioUrl: nil,
+                useCount: 0, lastUsedAt: nil, createdAt: Date()
+            )
+            phrases.insert(local, at: 0)
+            return
+        }
         guard NetworkMonitor.shared.isConnected else {
             throw HomeError.needsInternet
         }
-        let cat = Constants.apiCategory(category)
         _ = try await api.createPhrase(text: text, category: cat, isQuickPhrase: false)
         await loadPhrases()
     }

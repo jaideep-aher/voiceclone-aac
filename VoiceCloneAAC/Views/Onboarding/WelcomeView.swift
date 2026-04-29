@@ -3,6 +3,7 @@ import SwiftUI
 struct WelcomeView: View {
     var onGetStarted: () -> Void
     var onHaveAccount: () -> Void
+    var onSkip: (() -> Void)? = nil
 
     var body: some View {
         VStack(spacing: 28) {
@@ -47,6 +48,15 @@ struct WelcomeView: View {
                     .foregroundStyle(Color.vcPrimary)
             }
             .accessibilityLabel("I already have an account")
+
+            if let onSkip {
+                Button(action: onSkip) {
+                    Text("Try without account")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                .accessibilityLabel("Try without account")
+            }
 
             Spacer(minLength: 16)
         }

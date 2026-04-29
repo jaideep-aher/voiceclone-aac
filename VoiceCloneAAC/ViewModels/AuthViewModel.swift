@@ -99,4 +99,9 @@ final class AuthViewModel: ObservableObject {
     func handleUnauthorized() {
         signOut()
     }
+
+    /// Skip login — go straight to home as a guest (system TTS, no sync).
+    func skipAuth() {
+        route = .home
+    }
 }
