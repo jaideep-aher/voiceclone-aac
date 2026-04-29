@@ -20,20 +20,15 @@ enum Constants {
         return "https://YOUR_RAILWAY_URL"
     }()
 
+    /// Returns true when the backend URL is still a placeholder (not yet configured).
+    static var apiURLIsPlaceholder: Bool {
+        apiBaseURLString.contains("YOUR_RAILWAY_URL")
+    }
+
     static var apiBaseURL: URL {
-        guard let url = URL(string: apiBaseURLString),
-              !apiBaseURLString.contains("YOUR_RAILWAY_URL") else {
-            fatalError(
-                """
-                ⛔ VoiceClone AAC: API URL not configured.
-                Set VC_API_URL in:
-                  • Xcode scheme env vars (for development), OR
-                  • Info.plist via .xcconfig (for CI/TestFlight), OR
-                  • Constants.swift fallback (simplest option)
-                """
-            )
-        }
-        return url
+        // Fall back to a dummy URL instead of crashing — the app will show
+        // a "Backend not configured" screen via AuthViewModel.bootstrap().
+        URL(string: apiBaseURLString) ?? URL(string: "https://not-configured.invalid")!
     }
 
     static let keychainService = "com.voiceclone.aac.auth"
