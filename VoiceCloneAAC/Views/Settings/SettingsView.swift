@@ -11,7 +11,6 @@ struct SettingsView: View {
     @StateObject private var previewAudio = AudioService()
     @State private var previewBusy = false
     @State private var alertMessage: String?
-    @State private var showDeleteConfirm = false
 
     var body: some View {
         NavigationStack {
@@ -69,22 +68,6 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                 }
 
-                Section("Account") {
-                    if let name = auth.profile?.displayName, !name.isEmpty {
-                        LabeledContent("Name", value: name)
-                    }
-                    if let id = auth.profile?.id.uuidString.prefix(8) {
-                        Text("Account id: \(id)…")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                    }
-                    Button("Sign out", role: .destructive) {
-                        auth.signOut()
-                        dismiss()
-                    }
-                    .accessibilityLabel("Sign out")
-                }
-
                 Section("About") {
                     LabeledContent("Version") {
                         Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
@@ -96,13 +79,6 @@ struct SettingsView: View {
                     }
                 }
 
-                Section {
-                    Button("Delete account", role: .destructive) {
-                        showDeleteConfirm = true
-                    }
-                    .frame(maxWidth: .infinity)
-                    .accessibilityLabel("Delete account and local data")
-                }
             }
             .navigationTitle("Settings")
             .toolbar {
@@ -117,21 +93,6 @@ struct SettingsView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(alertMessage ?? "")
-            }
-            .confirmationDialog(
-                "Delete account?",
-                isPresented: $showDeleteConfirm,
-                titleVisibility: .visible
-            ) {
-                Button("Delete local data & sign out", role: .destructive) {
-                    KeychainHelper.deleteToken()
-                    try? audioCache.wipeAllCachedAndPending()
-                    auth.signOut()
-                    dismiss()
-                }
-                Button("Cancel", role: .cancel) {}
-            } message: {
-                Text("This removes the app session from this device. Contact support to remove server data.")
             }
         }
         .onAppear {
