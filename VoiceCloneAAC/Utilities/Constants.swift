@@ -16,8 +16,8 @@ enum Constants {
            !plist.isEmpty, !plist.hasPrefix("$(") {
             return plist
         }
-        // 3. Hardcoded fallback — replace with your Railway URL after `railway up`
-        return "https://YOUR_RAILWAY_URL"
+        // 3. Hardcoded fallback
+        return "https://voiceclone-aac-production.up.railway.app"
     }()
 
     /// Returns true when the backend URL is still a placeholder (not yet configured).
