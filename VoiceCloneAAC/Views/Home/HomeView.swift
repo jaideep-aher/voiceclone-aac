@@ -191,8 +191,6 @@ struct HomeView: View {
                             }
                         }
                     }
-                    .scrollContentBackground(.hidden)
-                    .background(Color.vcBackground)
                     .navigationTitle("New phrase")
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {

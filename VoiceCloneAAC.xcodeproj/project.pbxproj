@@ -25,7 +25,6 @@
 		BF0010 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0010 /* HomeViewModel.swift */; };
 		BF0011 /* VoiceSetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0011 /* VoiceSetupViewModel.swift */; };
 		BF0012 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0012 /* WelcomeView.swift */; };
-		BF0013 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0013 /* SignUpView.swift */; };
 		BF0014 /* VoiceSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0014 /* VoiceSetupView.swift */; };
 		BF0015 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0015 /* HomeView.swift */; };
 		BF0016 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0016 /* TextInputView.swift */; };
@@ -59,7 +58,6 @@
 		FR0010 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		FR0011 /* VoiceSetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSetupViewModel.swift; sourceTree = "<group>"; };
 		FR0012 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		FR0013 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		FR0014 /* VoiceSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSetupView.swift; sourceTree = "<group>"; };
 		FR0015 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FR0016 /* TextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 			isa = PBXGroup;
 			children = (
 				FR0012 /* WelcomeView.swift */,
-				FR0013 /* SignUpView.swift */,
 				FR0014 /* VoiceSetupView.swift */,
 			);
 			path = Onboarding;
@@ -311,7 +308,6 @@
 				BF0010 /* HomeViewModel.swift in Sources */,
 				BF0011 /* VoiceSetupViewModel.swift in Sources */,
 				BF0012 /* WelcomeView.swift in Sources */,
-				BF0013 /* SignUpView.swift in Sources */,
 				BF0014 /* VoiceSetupView.swift in Sources */,
 				BF0015 /* HomeView.swift in Sources */,
 				BF0016 /* TextInputView.swift in Sources */,
