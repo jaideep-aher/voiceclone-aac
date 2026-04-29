@@ -1,4 +1,3 @@
-import AuthenticationServices
 import SwiftUI
 
 struct SignUpView: View {
@@ -22,36 +21,9 @@ struct SignUpView: View {
                     .foregroundStyle(Color.vcPrimary)
                     .accessibilityAddTraits(.isHeader)
 
-                SignInWithAppleButton(.signIn) { request in
-                    request.requestedScopes = [.fullName, .email]
-                } onCompletion: { result in
-                    switch result {
-                    case .failure(let err):
-                        localError = err.localizedDescription
-                    case .success(let authorization):
-                        guard let cred = authorization.credential as? ASAuthorizationAppleIDCredential,
-                              let tokenData = cred.identityToken,
-                              let idToken = String(data: tokenData, encoding: .utf8)
-                        else {
-                            localError = "Could not read Apple identity token."
-                            return
-                        }
-                        Task { await signInApple(idToken: idToken) }
-                    }
-                }
-                .signInWithAppleButtonStyle(.black)
-                .frame(height: 56)
-                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-                .accessibilityLabel("Sign in with Apple")
-
-                HStack {
-                    Rectangle().fill(Color.secondary.opacity(0.3)).frame(height: 1)
-                    Text("or")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                    Rectangle().fill(Color.secondary.opacity(0.3)).frame(height: 1)
-                }
-                .accessibilityHidden(true)
+                // Sign in with Apple is re-enabled when enrolled in
+                // the Apple Developer Program ($99/yr). Personal Team
+                // accounts do not support this capability.
 
                 Group {
                     if isSignUp {
@@ -114,18 +86,6 @@ struct SignUpView: View {
             .padding(24)
         }
         .background(Color.vcBackground.ignoresSafeArea())
-    }
-
-    private func signInApple(idToken: String) async {
-        isBusy = true
-        localError = nil
-        defer { isBusy = false }
-        do {
-            let session = try await APIService.shared.signInWithApple(idToken: idToken, nonce: nil)
-            try await auth.handleSession(session)
-        } catch {
-            localError = error.localizedDescription
-        }
     }
 
     private func submit() async {
