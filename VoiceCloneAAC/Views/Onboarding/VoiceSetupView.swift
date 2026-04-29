@@ -18,9 +18,13 @@ struct VoiceSetupView: View {
                     .foregroundStyle(Color.vcPrimary)
                     .accessibilityAddTraits(.isHeader)
 
+                Text("Read the text below aloud at a normal pace — no need to rush.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
                 Text(Constants.samplePhraseForRecording)
                     .font(.title3)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.black)
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(RoundedRectangle(cornerRadius: 12).fill(Color.white))

@@ -35,7 +35,7 @@ enum Constants {
     static let keychainTokenAccount = "access_token"
 
     static let samplePhraseForRecording = """
-    The quick brown fox jumps over the lazy dog. I love spending time with my family on sunny afternoons.
+    When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow. The colors are red, orange, yellow, green, blue, and violet.
     """
 
     static let postClonePreviewText = "Hello, this is your voice clone."

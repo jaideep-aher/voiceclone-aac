@@ -8,6 +8,8 @@ struct TextInputView: View {
         VStack(alignment: .leading, spacing: 8) {
             TextEditor(text: $text)
                 .font(.title3)
+                .foregroundStyle(Color.black)
+                .tint(Color.vcPrimary)
                 .scrollContentBackground(.hidden)
                 .frame(minHeight: 160)
                 .padding(14)

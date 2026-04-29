@@ -13,6 +13,7 @@ struct VoiceCloneAACApp: App {
         WindowGroup {
             RootFlowView()
                 .environmentObject(authViewModel)
+                .preferredColorScheme(.light)
         }
     }
 }
