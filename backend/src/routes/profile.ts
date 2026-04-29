@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { AppError } from '../errors/AppError';
-import { getSupabaseAdmin } from '../lib/supabase';
+import { pool } from '../lib/db';
 import { requireAuth } from '../middleware/auth';
 import { asyncHandler } from '../utils/asyncHandler';
 
@@ -10,17 +10,13 @@ profileRouter.get(
   '/profile',
   requireAuth,
   asyncHandler(async (req, res) => {
-    const admin = getSupabaseAdmin();
-    const { data, error } = await admin
-      .from('profiles')
-      .select('*')
-      .eq('id', req.userId as string)
-      .single();
+    const { rows } = await pool.query(
+      `SELECT id, display_name, voice_clone_id, voice_clone_status, created_at, updated_at
+       FROM profiles WHERE id = $1`,
+      [req.userId]
+    );
 
-    if (error || !data) {
-      throw new AppError(404, error?.message || 'Profile not found');
-    }
-
-    res.json(data);
+    if (!rows[0]) throw new AppError(404, 'Profile not found');
+    res.json(rows[0]);
   })
 );

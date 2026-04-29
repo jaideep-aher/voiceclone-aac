@@ -1,130 +1,81 @@
 import { Router } from 'express';
 import { AppError } from '../errors/AppError';
-import { getSupabaseAdmin } from '../lib/supabase';
+import { pool } from '../lib/db';
 import { requireAuth } from '../middleware/auth';
 import { asyncHandler } from '../utils/asyncHandler';
-import {
-  createPhraseBody,
-  listPhrasesQuery,
-  updatePhraseBody,
-} from '../validation/phrases';
+import { createPhraseBody, updatePhraseBody } from '../validation/phrases';
 
 export const phrasesRouter = Router();
-
 phrasesRouter.use(requireAuth);
+
+phrasesRouter.get(
+  '/phrases',
+  asyncHandler(async (req, res) => {
+    const { rows } = await pool.query(
+      `SELECT id, user_id, text, category, is_quick_phrase, audio_url,
+              use_count, last_used_at, created_at
+       FROM phrases
+       WHERE user_id = $1
+       ORDER BY use_count DESC, created_at DESC`,
+      [req.userId]
+    );
+    res.json(rows);
+  })
+);
 
 phrasesRouter.post(
   '/phrases',
   asyncHandler(async (req, res) => {
     const body = createPhraseBody.parse(req.body);
-    const admin = getSupabaseAdmin();
-
-    const { data, error } = await admin
-      .from('phrases')
-      .insert({
-        user_id: req.userId,
-        text: body.text,
-        category: body.category,
-        is_quick_phrase: body.is_quick_phrase,
-      })
-      .select()
-      .single();
-
-    if (error || !data) {
-      throw new AppError(400, error?.message || 'Could not create phrase');
-    }
-
-    res.status(201).json(data);
-  })
-);
-
-phrasesRouter.get(
-  '/phrases',
-  asyncHandler(async (req, res) => {
-    const q = listPhrasesQuery.parse(req.query);
-    const admin = getSupabaseAdmin();
-
-    let query = admin
-      .from('phrases')
-      .select('*')
-      .eq('user_id', req.userId as string);
-
-    if (q.category) {
-      query = query.eq('category', q.category);
-    }
-
-    const { data, error } = await query.order('use_count', { ascending: false });
-
-    if (error) {
-      throw new AppError(400, error.message);
-    }
-
-    res.json(data ?? []);
+    const { rows } = await pool.query(
+      `INSERT INTO phrases (user_id, text, category, is_quick_phrase)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id, user_id, text, category, is_quick_phrase, audio_url, use_count, last_used_at, created_at`,
+      [req.userId, body.text, body.category, body.is_quick_phrase]
+    );
+    res.status(201).json(rows[0]);
   })
 );
 
 phrasesRouter.put(
   '/phrases/:id',
   asyncHandler(async (req, res) => {
-    const id = req.params.id;
     const patch = updatePhraseBody.parse(req.body);
 
-    if (
-      patch.text === undefined &&
-      patch.category === undefined &&
-      patch.is_quick_phrase === undefined
-    ) {
+    if (!patch.text && !patch.category && patch.is_quick_phrase === undefined) {
       throw new AppError(400, 'No fields to update');
     }
 
-    const admin = getSupabaseAdmin();
-    const updatePayload: Record<string, unknown> = {};
-    if (patch.text !== undefined) updatePayload.text = patch.text;
-    if (patch.category !== undefined) updatePayload.category = patch.category;
-    if (patch.is_quick_phrase !== undefined) {
-      updatePayload.is_quick_phrase = patch.is_quick_phrase;
-    }
+    const sets: string[] = [];
+    const vals: unknown[] = [];
+    let i = 1;
 
-    const { data, error } = await admin
-      .from('phrases')
-      .update(updatePayload)
-      .eq('id', id)
-      .eq('user_id', req.userId as string)
-      .select()
-      .maybeSingle();
+    if (patch.text !== undefined)           { sets.push(`text = $${i++}`);           vals.push(patch.text); }
+    if (patch.category !== undefined)       { sets.push(`category = $${i++}`);       vals.push(patch.category); }
+    if (patch.is_quick_phrase !== undefined){ sets.push(`is_quick_phrase = $${i++}`);vals.push(patch.is_quick_phrase); }
 
-    if (error) {
-      throw new AppError(400, error.message);
-    }
-    if (!data) {
-      throw new AppError(404, 'Phrase not found');
-    }
+    vals.push(req.params.id, req.userId);
 
-    res.json(data);
+    const { rows } = await pool.query(
+      `UPDATE phrases SET ${sets.join(', ')}
+       WHERE id = $${i++} AND user_id = $${i}
+       RETURNING id, user_id, text, category, is_quick_phrase, audio_url, use_count, last_used_at, created_at`,
+      vals
+    );
+
+    if (!rows[0]) throw new AppError(404, 'Phrase not found');
+    res.json(rows[0]);
   })
 );
 
 phrasesRouter.delete(
   '/phrases/:id',
   asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const admin = getSupabaseAdmin();
-
-    const { data, error } = await admin
-      .from('phrases')
-      .delete()
-      .eq('id', id)
-      .eq('user_id', req.userId as string)
-      .select('id')
-      .maybeSingle();
-
-    if (error) {
-      throw new AppError(400, error.message);
-    }
-    if (!data) {
-      throw new AppError(404, 'Phrase not found');
-    }
-
+    const { rowCount } = await pool.query(
+      'DELETE FROM phrases WHERE id = $1 AND user_id = $2',
+      [req.params.id, req.userId]
+    );
+    if (!rowCount) throw new AppError(404, 'Phrase not found');
     res.status(204).send();
   })
 );

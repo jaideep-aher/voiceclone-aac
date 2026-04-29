@@ -1,66 +1,41 @@
+import bcrypt from 'bcryptjs';
 import { Router } from 'express';
 import { AppError } from '../errors/AppError';
-import { getSupabaseAdmin, getSupabaseAnon } from '../lib/supabase';
+import { pool } from '../lib/db';
+import { signToken } from '../lib/jwt';
 import { asyncHandler } from '../utils/asyncHandler';
-import { appleBody, loginBody, signupBody } from '../validation/auth';
+import { loginBody, signupBody } from '../validation/auth';
 
 export const authRouter = Router();
-
-function sessionResponse(session: {
-  access_token: string;
-  refresh_token: string;
-  expires_in?: number;
-  token_type: string;
-}, user: unknown) {
-  return {
-    access_token: session.access_token,
-    refresh_token: session.refresh_token,
-    expires_in: session.expires_in,
-    token_type: session.token_type,
-    user,
-  };
-}
 
 authRouter.post(
   '/signup',
   asyncHandler(async (req, res) => {
     const { email, password, display_name } = signupBody.parse(req.body);
-    const admin = getSupabaseAdmin();
 
-    const { data: created, error: createErr } = await admin.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-      user_metadata: { display_name },
-    });
-
-    if (createErr || !created.user) {
-      throw new AppError(400, createErr?.message || 'Signup failed');
+    const exists = await pool.query('SELECT id FROM profiles WHERE email = $1', [email.toLowerCase()]);
+    if (exists.rows.length > 0) {
+      throw new AppError(400, 'An account with this email already exists');
     }
 
-    const userId = created.user.id;
+    const passwordHash = await bcrypt.hash(password, 12);
 
-    const { error: profileErr } = await admin.from('profiles').insert({
-      id: userId,
-      display_name,
+    const { rows } = await pool.query(
+      `INSERT INTO profiles (email, password_hash, display_name)
+       VALUES ($1, $2, $3)
+       RETURNING id, email, display_name, voice_clone_id, voice_clone_status, created_at, updated_at`,
+      [email.toLowerCase(), passwordHash, display_name.trim()]
+    );
+
+    const user = rows[0];
+    const token = signToken(user.id, user.email);
+
+    res.status(201).json({
+      access_token: token,
+      token_type: 'bearer',
+      expires_in: 2592000, // 30 days in seconds
+      user,
     });
-
-    if (profileErr) {
-      await admin.auth.admin.deleteUser(userId);
-      throw new AppError(400, profileErr.message);
-    }
-
-    const anon = getSupabaseAnon();
-    const { data: signIn, error: signErr } = await anon.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (signErr || !signIn.session) {
-      throw new AppError(500, signErr?.message || 'Login after signup failed');
-    }
-
-    res.status(201).json(sessionResponse(signIn.session, signIn.user));
   })
 );
 
@@ -68,62 +43,34 @@ authRouter.post(
   '/login',
   asyncHandler(async (req, res) => {
     const { email, password } = loginBody.parse(req.body);
-    const anon = getSupabaseAnon();
-    const { data, error } = await anon.auth.signInWithPassword({ email, password });
 
-    if (error || !data.session) {
-      throw new AppError(401, error?.message || 'Invalid credentials');
+    const { rows } = await pool.query(
+      'SELECT id, email, display_name, password_hash, voice_clone_id, voice_clone_status, created_at, updated_at FROM profiles WHERE email = $1',
+      [email.toLowerCase()]
+    );
+
+    const user = rows[0];
+    // Use constant-time compare — don't reveal whether email exists
+    const valid = user ? await bcrypt.compare(password, user.password_hash) : false;
+    if (!user || !valid) {
+      throw new AppError(401, 'Invalid email or password');
     }
 
-    res.json(sessionResponse(data.session, data.user));
-  })
-);
+    const token = signToken(user.id, user.email);
 
-authRouter.post(
-  '/apple',
-  asyncHandler(async (req, res) => {
-    const { id_token, nonce } = appleBody.parse(req.body);
-    const anon = getSupabaseAnon();
-
-    const { data, error } = await anon.auth.signInWithIdToken({
-      provider: 'apple',
-      token: id_token,
-      nonce: nonce ?? undefined,
+    res.json({
+      access_token: token,
+      token_type: 'bearer',
+      expires_in: 2592000,
+      user: {
+        id: user.id,
+        email: user.email,
+        display_name: user.display_name,
+        voice_clone_id: user.voice_clone_id,
+        voice_clone_status: user.voice_clone_status,
+        created_at: user.created_at,
+        updated_at: user.updated_at,
+      },
     });
-
-    if (error || !data.session || !data.user) {
-      throw new AppError(401, error?.message || 'Apple sign-in failed');
-    }
-
-    const admin = getSupabaseAdmin();
-    const userId = data.user.id;
-    const { data: existing } = await admin
-      .from('profiles')
-      .select('id')
-      .eq('id', userId)
-      .maybeSingle();
-
-    if (!existing) {
-      const meta = data.user.user_metadata as Record<string, unknown> | undefined;
-      const fromMeta =
-        (typeof meta?.full_name === 'string' && meta.full_name) ||
-        (typeof meta?.name === 'string' && meta.name) ||
-        '';
-      const display =
-        fromMeta ||
-        (data.user.email ? data.user.email.split('@')[0] : '') ||
-        'User';
-
-      const { error: insErr } = await admin.from('profiles').insert({
-        id: userId,
-        display_name: display,
-      });
-
-      if (insErr) {
-        throw new AppError(400, insErr.message);
-      }
-    }
-
-    res.json(sessionResponse(data.session, data.user));
   })
 );
